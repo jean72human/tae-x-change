@@ -74,7 +74,27 @@ def register(conn, email, password, phone_no):
     return False
 
 
-#def 
+def createWallet(conn,user_email,crypto_name):
+    """
+    allows for creation of a wellet'()
+    """
+    pass
+
+
+def enterAccountDetails(conn, account_type,name,user_email,public_account_number):
+    """
+    allows user to enter the details of his fiat currency account
+    """
+    pass
+
+
+def enterOperation(conn,advert, respondent_email, amount, date):
+    """
+    allows users to enter an operation to respond to an advert
+    """
+
+def enterAdvert(conn,user_email,crypto_name,rate,type,mean_of_payment,max_amout,min_amount):
+    pass
 
 
 

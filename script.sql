@@ -16,8 +16,8 @@ CREATE SCHEMA IF NOT EXISTS `taeXchange` DEFAULT CHARACTER SET utf8 ;
 ##Creating users table
 CREATE TABLE IF NOT EXISTS `taeXchange`.`Users` (
   `user_email` VARCHAR(30) NOT NULL,
-  `user_name` VARCHAR(45) NOT NULL,
-  `phone number` VARCHAR(15) NULL DEFAULT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `phone_no` VARCHAR(15) NULL DEFAULT NULL,
   PRIMARY KEY (`user_email`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -28,7 +28,6 @@ CREATE TABLE IF NOT EXISTS `taeXchange`.`Cryptocurrency` (
   `crypto_name` VARCHAR(20) NOT NULL,
   `buying_rate` INT(11) NULL DEFAULT NULL,
   `selling_rate` INT(11) NULL DEFAULT NULL,
-  `date` DATE NOT NULL,
   PRIMARY KEY (`crypto_name`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -36,7 +35,7 @@ DEFAULT CHARACTER SET = utf8;
 
 ##Create wallet table
 CREATE TABLE IF NOT EXISTS `taeXchange`.`wallet` (
-  `wallet_id` INT(11) NOT NULL,
+  `wallet_id` INT(11) NOT NULL auto_increment,
   `amount` INT(11) NOT NULL,
   `user_email` VARCHAR(30) NOT NULL,
   `crypto_name` VARCHAR(20) NOT NULL,
@@ -46,13 +45,13 @@ CREATE TABLE IF NOT EXISTS `taeXchange`.`wallet` (
   CONSTRAINT `user_email`
     FOREIGN KEY (`user_email`)
     REFERENCES `taeXchange`.`Users` (`user_email`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `crupto_name`
     FOREIGN KEY (`crypto_name`)
     REFERENCES `taeXchange`.`Cryptocurrency` (`crypto_name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -60,7 +59,7 @@ DEFAULT CHARACTER SET = utf8;
 
 ## Creating Account table
 CREATE TABLE IF NOT EXISTS `taeXchange`.`Account` (
-  `idAccount` INT(11) NOT NULL,
+  `idAccount` INT(11) NOT NULL auto_increment,
   `account_type` ENUM('bank', 'mobile-money') NOT NULL,
   `name_of_account` VARCHAR(45) NOT NULL,
   `users_email` VARCHAR(30) NOT NULL,
@@ -71,8 +70,8 @@ CREATE TABLE IF NOT EXISTS `taeXchange`.`Account` (
   CONSTRAINT `users_email`
     FOREIGN KEY (`users_email`)
     REFERENCES `taeXchange`.`Users` (`user_email`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -80,7 +79,7 @@ DEFAULT CHARACTER SET = utf8;
 
 ## Creating Advert table
 CREATE TABLE IF NOT EXISTS `taeXchange`.`advert` (
-  `idadvert` INT(11) NOT NULL,
+  `idadvert` INT(11) NOT NULL auto_increment,
   `user_email` VARCHAR(30) NOT NULL,
   `crypto_name` VARCHAR(20) NOT NULL,
   `rate` INT(11) NULL DEFAULT NULL,
@@ -95,18 +94,18 @@ CREATE TABLE IF NOT EXISTS `taeXchange`.`advert` (
   CONSTRAINT `user-email`
     FOREIGN KEY (`user_email`)
     REFERENCES `taeXchange`.`Users` (`user_email`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `crypto-name`
     FOREIGN KEY (`crypto_name`)
     REFERENCES `taeXchange`.`Cryptocurrency` (`crypto_name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `means_payment_id`
     FOREIGN KEY (`means_payment_id`)
     REFERENCES `taeXchange`.`Account` (`idAccount`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -114,7 +113,7 @@ DEFAULT CHARACTER SET = utf8;
 
 ##Creating Operation 
 CREATE TABLE IF NOT EXISTS `taeXchange`.`Operation` (
-  `idOperation` INT(11) NOT NULL,
+  `idOperation` INT(11) NOT NULL auto_increment,
   `idadvert` INT(11) NOT NULL,
   `respondent_email` VARCHAR(30) NOT NULL,
   `amount` INT(11) NOT NULL,
@@ -125,13 +124,13 @@ CREATE TABLE IF NOT EXISTS `taeXchange`.`Operation` (
   CONSTRAINT `responent_email`
     FOREIGN KEY (`respondent_email`)
     REFERENCES `taeXchange`.`Users` (`user_email`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `idadvert`
     FOREIGN KEY (`idadvert`)
     REFERENCES `taeXchange`.`advert` (`idadvert`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -245,8 +244,10 @@ CREATE  OR REPLACE VIEW `cryptoBuying` AS
 SELECT * FROM cryptocurrency
 WHERE crypto_name IN (SELECT crypto_name FROM advert WHERE type='buying');
 
-
-
+insert into users(user_email,password,phone_no) values("jsadovonon@gmail.com","password","0557486280");
+select * from users where user_email = "jsadovonon@gmail.com";
+select * from users;
+insert into cryptocurrency(crypto_name, buying_rate, selling_rate) values ("bitcoin", 9400, 9300);
 -- -----------------------------------------------------
 -- View `taeXchange`.`cryptoUsed`
 -- -----------------------------------------------------
